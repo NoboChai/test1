@@ -48,7 +48,7 @@ class _RandomWordsState extends State<RandomWords> {
         }
         return ListTile(
           title: Text(
-            _suggestions[index].asPascalCase,
+              (index+1).toString().padLeft(10,' ') + ':' + _suggestions[index].asPascalCase,
             style: _biggerFont,
           ),
         );
