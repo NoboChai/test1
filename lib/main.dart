@@ -1,5 +1,6 @@
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:test1/ogenco_cat_title_logo.dart';
+import 'package:test1/fish_button.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,46 +15,41 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Startup Name Generator',
       home: Scaffold(
-        appBar: AppBar(title: const Text('Startup Name Generator')),
-        body: const Center(
-          child: RandomWords(),
+        appBar: AppBar(flexibleSpace: const OgencoCatTitleLogo()),
+        body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return _buildBody(constraints);
+          },
         ),
       ),
     );
   }
-}
 
-class RandomWords extends StatefulWidget {
-  const RandomWords({Key? key}) : super(key: key);
+  Widget _buildBody(BoxConstraints constraints) {
+    double width = constraints.maxWidth;
+    double height = constraints.maxHeight;
 
-  @override
-  State<RandomWords> createState() => _RandomWordsState();
-}
+    debugPrint('width=${constraints.maxWidth}');
+    debugPrint('height=${constraints.maxHeight}');
 
-class _RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
-  final _biggerFont = const TextStyle(fontSize: 18);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16.0),
-      itemBuilder: /* 1 */ (context,i) {
-        if (i.isOdd) {
-          return const Divider(); /* 2 */
-        }
-        final index = i ~/ 2; /* 3 */
-        if (index >= _suggestions.length) {
-          _suggestions.addAll(generateWordPairs().take(10)); /* 4 */
-        }
-        return ListTile(
-          title: Text(
-              (index+1).toString().padLeft(10,' ') + ':' + _suggestions[index].asPascalCase,
-            style: _biggerFont,
+    return SizedBox.fromSize(
+      size: Size(width, height),
+      child: Column(
+        children: <Widget>[
+          SizedBox.fromSize(
+            size: Size(width * 0.5, height * 0.1),
+            child: const FishButton(title: '下僕情報'),
           ),
-        );
-      },
+          SizedBox.fromSize(
+            size: Size(width * 0.5, height * 0.1),
+            child: const FishButton(title: 'ねこさま情報'),
+          ),
+          SizedBox.fromSize(
+            size: Size(width * 0.5, height * 0.1),
+            child: const FishButton(title: 'うんこカレンダー'),
+          ),
+        ],
+      ),
     );
   }
 }
-
