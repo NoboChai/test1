@@ -1,75 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class FishButton extends StatefulWidget {
+class FishFrame extends StatefulWidget {
   final String title;
 
-  const FishButton({Key? key, required this.title}) : super(key: key);
+  const FishFrame({Key? key, required this.title}) : super(key: key);
   @override
-  State<FishButton> createState() => _FishButtonState();
+  State<FishFrame> createState() => _FishFrameState();
 }
 
-class _FishButtonState extends State<FishButton> {
-  String title = 'タイトル';
-  double fontSize = 16.0;
-
-  _FishButtonState();
-  @override
-  void initState() {
-    title = widget.title;
-    super.initState();
-  }
-
+class _FishFrameState extends State<FishFrame> {
   @override
   Widget build(BuildContext context) {
-
-//    debugPrint('$title :${context.size}');
-
-    return Stack(
-      children: <Widget>[
-        SizedBox.expand(
-          child: FittedBox(
-            fit: BoxFit.fitWidth,
+    return SizedBox(
+      width: 252,
+      height: 52,
+      child: Stack(
+        children: <Widget>[
+          Align(
+            alignment: const Alignment(0.0, 0.0),
             child: SvgPicture.string(
               _svgFish,
-//              allowDrawingOutsideViewBox: true,
               allowDrawingOutsideViewBox: false,
-//              fit: BoxFit.fill,
-              fit: BoxFit.fitHeight,
+              fit: BoxFit.none,
             ),
           ),
-        ),
-        LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            return _buildTitle(constraints);
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTitle(BoxConstraints constraints) {
-    return Align(
-      alignment: const Alignment(-0.228, 0.0),
-      child: SizedBox.fromSize(
-        size: Size(constraints.maxWidth * 0.5, constraints.maxHeight * 0.6),
-        child: FittedBox(
-//          fit: BoxFit.fitWidth,
-          fit: BoxFit.fitHeight,
-          child: Text(
-            title,
-            style: TextStyle(
-              fontFamily: 'azukifontB',
-              fontSize: fontSize,
-              color: const Color(0xffffffff),
-              height: 1.375,
+          Align(
+            alignment: const Alignment(-0.20, -0.0),
+            child: Text(
+              widget.title,
+              style: const TextStyle(
+                fontFamily: 'azukifontB',
+                fontSize: 16.0,
+                color: Color(0xffffffff),
+                height: 1.375,
+              ),
+              textHeightBehavior:
+                  const TextHeightBehavior(applyHeightToFirstAscent: false),
+              textAlign: TextAlign.center,
+              softWrap: false,
             ),
-            textHeightBehavior:
-                const TextHeightBehavior(applyHeightToFirstAscent: false),
-            textAlign: TextAlign.center,
-            softWrap: false,
           ),
-        ),
+        ],
       ),
     );
   }
