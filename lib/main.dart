@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test1/ogenco_cat_title_logo.dart';
-import 'package:test1/fish_frame.dart';
+import 'package:test1/fish.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,10 +16,13 @@ class MyApp extends StatelessWidget {
       title: 'Startup Name Generator',
       home: Scaffold(
         appBar: AppBar(flexibleSpace: const OgencoCatTitleLogo()),
-        body: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            return _buildBody(constraints);
-          },
+        body: Container(
+          padding: const EdgeInsets.all(8),
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return _buildBody(constraints);
+            },
+          ),
         ),
       ),
     );
@@ -27,36 +30,57 @@ class MyApp extends StatelessWidget {
 
   Widget _buildBody(BoxConstraints constraints) {
     double width = constraints.maxWidth;
-    double height = constraints.maxHeight;
-//    debugPrint('width=${constraints.maxWidth}');
-//    debugPrint('height=${constraints.maxHeight}');
-    double widthRatio = 0.9;
-    double heightRatio = 0.3;
-    BoxFit fit = width > height ? BoxFit.fitHeight : BoxFit.fitWidth;
+    double height = constraints.maxHeight * (7 / 10) / 3;
 
+    if (height > width / Fish.fishSizeAspect) {
+      height = width / Fish.fishSizeAspect;
+    }
+
+    double imageHeight = constraints.maxHeight * (3 / 10);
     return SizedBox.fromSize(
-      size: Size(width, height),
-      child: Column(
+      size: Size(constraints.maxWidth, constraints.maxHeight),
+      child: Stack(
         children: <Widget>[
-          SizedBox.fromSize(
-              size: Size(width * widthRatio, height * heightRatio),
-              child: FittedBox(
-                fit: fit,
-                child: const FishFrame(title: '下僕情報'),
-              )),
-          SizedBox.fromSize(
-              size: Size(width * widthRatio, height * heightRatio),
-              child: FittedBox(
-                fit: fit,
-                child: const FishFrame(title: 'ねこさま情報'),
-              )),
-          SizedBox.fromSize(
-              size: Size(width * widthRatio, height * heightRatio),
-              child: FittedBox(
-                fit: fit,
-                child: const FishFrame(title: 'うんこカレンダー'),
-              )),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              _buildFish('うんこカレンダー', width, height),
+              _buildFish('ねこさま情報', width, height),
+              _buildFish('下僕情報', width, height),
+            ],
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Row(
+              children: <Widget>[
+                const Spacer(),
+                Image.asset('assets/images/unco.png',
+                    height: imageHeight,
+                    width: imageHeight * 0.4,
+                    fit: BoxFit.contain,
+                    alignment: Alignment.bottomRight),
+                Image.asset('assets/images/cat_image.png',
+                    height: imageHeight, fit: BoxFit.contain),
+              ],
+            ),
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildFish(String title, double parentWidth, double parentHeight) {
+    double width = parentWidth * 0.8;
+    double height = parentHeight * 0.90;
+
+    BoxFit fit = width / height > Fish.fishSizeAspect
+        ? BoxFit.fitHeight
+        : BoxFit.fitWidth;
+    return SizedBox.fromSize(
+      size: Size(parentWidth, parentHeight),
+      child: FittedBox(
+        fit: fit,
+        child: Fish(title: title),
       ),
     );
   }
